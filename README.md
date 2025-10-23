@@ -1,6 +1,6 @@
 # Advanced Trading Engine
 
-A sophisticated Python-based trading engine for quantitative finance, featuring machine learning strategies, advanced risk management, and comprehensive backtesting capabilities.
+This is a sophisticated Python-based trading engine for quantitative finance, featuring machine learning strategies, advanced risk management, and comprehensive backtesting capabilities.
 
 ## Architecture Overview
 
