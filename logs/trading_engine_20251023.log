@@ -1,0 +1,8 @@
+2025-10-23 20:05:39,399 - src.data.data_manager - ERROR - Error calculating indicators: too many values to unpack (expected 3)
+2025-10-23 20:05:39,399 - src.data.data_manager - ERROR - Error calculating indicators: too many values to unpack (expected 3)
+2025-10-23 20:05:39,399 - src.data.data_manager - ERROR - Error fetching data: too many values to unpack (expected 3)
+2025-10-23 20:05:39,399 - src.data.data_manager - ERROR - Error fetching data: too many values to unpack (expected 3)
+2025-10-23 20:06:01,987 - src.data.data_manager - ERROR - Error calculating indicators: 'BBU_20_2.0'
+2025-10-23 20:06:01,987 - src.data.data_manager - ERROR - Error calculating indicators: 'BBU_20_2.0'
+2025-10-23 20:06:01,990 - src.data.data_manager - ERROR - Error fetching data: 'BBU_20_2.0'
+2025-10-23 20:06:01,990 - src.data.data_manager - ERROR - Error fetching data: 'BBU_20_2.0'

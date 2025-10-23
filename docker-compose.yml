@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  trading-engine:
+    build: .
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+    command: python main.py
