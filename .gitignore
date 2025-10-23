@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Virtual environments
+venv/
+.env
+.env.*
+
+# Data and cache
+*.sqlite3
+data/
+logs/
+*.db
+*.h5
+*.csv
+*.pkl
+*.cache
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# Test and coverage
+.coverage
+htmlcov/
+.tox/
+pytest_cache/
+
+# Misc
+*.bak
+*.swp
+*.tmp
+
+# Ignore secrets
+*.secret
+*.key
+*.pem
