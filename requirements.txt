@@ -9,7 +9,6 @@ matplotlib==3.7.2
 pytest==7.4.0
 python-dotenv==1.0.0
 ccxt
-pandas-ta==0.3.14b
 statsmodels==0.14.0
 scipy==1.11.3
 optuna==3.3.0
