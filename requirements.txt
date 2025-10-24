@@ -6,6 +6,8 @@ scikit-learn==1.3.0
 matplotlib==3.7.2
 pytest==7.4.0
 python-dotenv==1.0.0
+setuptools
+wheel
 ccxt
 pandas-ta==0.3.14b
 statsmodels==0.14.0
