@@ -173,7 +173,8 @@ class ExecutionHandler:
             position['quantity'] -= order.filled_quantity
             
         if position['quantity'] == 0:
-            del self.positions[order.symbol]
+            if order.symbol in self.positions:
+                del self.positions[order.symbol]
         else:
             self.positions[order.symbol] = position
     
