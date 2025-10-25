@@ -30,18 +30,30 @@ def main():
     portfolio_returns = pd.DataFrame()
     
     for symbol in symbols:
-        # Fetch and prepare data
-        data = data_manager.fetch_data(
-            symbol=symbol,
-            start_date=start_date.strftime('%Y-%m-%d'),
-            end_date=end_date.strftime('%Y-%m-%d'),
-            interval='1d'
-        )
-        portfolio_data[symbol] = data
-        portfolio_returns[symbol] = data['Close'].pct_change()
+        # Fetch and validate data
+        try:
+            data = data_manager.fetch_data(
+                symbol=symbol,
+                start_date=start_date.strftime('%Y-%m-%d'),
+                end_date=end_date.strftime('%Y-%m-%d'),
+                interval='1d'
+            )
+            data = data_manager.validate_data(data)
+        except Exception as e:
+            print(f"Failed to fetch or validate data for {symbol}: {e}")
+            data = pd.DataFrame()
         
-        # Train ML strategy
-        ml_strategy.train(data)
+        if data.empty or 'Close' not in data.columns:
+            print(f"No valid data for {symbol}. Skipping ML training and trading logic.")
+            portfolio_data[symbol] = data
+            portfolio_returns[symbol] = pd.Series(dtype=float)
+            continue
+        else:
+            print(f"Fetched {len(data)} rows for {symbol}.")
+            portfolio_data[symbol] = data
+            portfolio_returns[symbol] = data['Close'].pct_change()
+            # Train ML strategy
+            ml_strategy.train(data)
     
     # Optimize portfolio weights
     optimization_result = portfolio_optimizer.optimize_portfolio(
@@ -55,13 +67,17 @@ def main():
     
     # Simulate trading
     portfolio_value = config.get('backtesting.initial_capital', 100000)
-    current_prices = {symbol: data['Close'].iloc[-1] for symbol, data in portfolio_data.items()}
+    current_prices = {
+    
+    symbol: (data['Close'].iloc[-1] if not data.empty and 'Close' in data.columns else float('nan'))
+    for symbol, data in portfolio_data.items()
+    }
     
     for symbol, weight in zip(symbols, optimization_result['weights']):
         data = portfolio_data[symbol]
         signals = ml_strategy.generate_signals(data)
         
-        if signals.iloc[-1] != 0:  # If we have a trading signal
+        if not signals.empty and signals.iloc[-1] != 0:  # If we have a trading signal
             allocation = portfolio_value * weight
             price = current_prices[symbol]
             
@@ -84,15 +100,18 @@ def main():
             print(f"Quantity: {order.quantity:.2f}")
             print(f"Price: ${order.price:.2f}")
     
-    # Calculate portfolio metrics
-    metrics = performance_analytics.calculate_metrics(portfolio_returns.mean(axis=1))
-    
-    print("\nPortfolio Performance Metrics:")
-    print(f"Sharpe Ratio: {metrics['sharpe_ratio']:.4f}")
-    print(f"Sortino Ratio: {metrics['sortino_ratio']:.4f}")
-    print(f"Max Drawdown: {metrics['max_drawdown']:.4%}")
-    print(f"Annual Return: {metrics['annual_return']:.4%}")
-    print(f"Win Rate: {metrics['win_rate']:.4%}")
+    # Calculate portfolio metrics only if returns are available
+    mean_returns = portfolio_returns.mean(axis=1)
+    if not mean_returns.empty and mean_returns.notna().any():
+        metrics = performance_analytics.calculate_metrics(mean_returns)
+        print("\nPortfolio Performance Metrics:")
+        print(f"Sharpe Ratio: {metrics['sharpe_ratio']:.4f}")
+        print(f"Sortino Ratio: {metrics['sortino_ratio']:.4f}")
+        print(f"Max Drawdown: {metrics['max_drawdown']:.4%}")
+        print(f"Annual Return: {metrics['annual_return']:.4%}")
+        print(f"Win Rate: {metrics['win_rate']:.4%}")
+    else:
+        print("\nNo portfolio returns available. Skipping performance metrics.")
 
 if __name__ == "__main__":
     main()

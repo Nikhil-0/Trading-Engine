@@ -80,10 +80,16 @@ class Backtester:
                     entry_price = 0
         
         # Calculate performance metrics
+
         trade_history = self.executor.get_trade_history()
         total_trades = len(trade_history)
-        profitable_trades = len(trade_history[trade_history['pnl'] > 0])
-        total_pnl = trade_history['pnl'].sum()
+        if 'pnl' in trade_history.columns:
+            profitable_trades = len(trade_history[trade_history['pnl'] > 0])
+            total_pnl = trade_history['pnl'].sum()
+        else:
+            print("Column 'pnl' not found in trade_history. Check data pipeline.")
+            profitable_trades = 0
+            total_pnl = 0
         
         return {
             'initial_capital': self.initial_capital,

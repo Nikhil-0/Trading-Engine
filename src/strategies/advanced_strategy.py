@@ -39,7 +39,11 @@ class MLStrategy(Strategy):
             else:
                 logger.warning(f"Feature {feature} not found in data")
         
+        if not feature_data:
+            return np.empty((0, len(self.features)))
         X = np.column_stack(feature_data)
+        if X.shape[0] == 0:
+            return X
         X = self.scaler.fit_transform(X)
         return X
     
@@ -52,18 +56,21 @@ class MLStrategy(Strategy):
     
     def generate_signals(self, data: pd.DataFrame) -> pd.Series:
         X = self._prepare_features(data)
+        if X.shape[0] == 0 or not hasattr(self.model, "n_classes_"):
+            print("Model not fitted or no data available for signal generation. Skipping.")
+            return pd.Series(index=data.index, data=0)
         probas = self.model.predict_proba(X)
-        
         signals = pd.Series(index=data.index, data=0)
         signals[probas[:, 1] > self.threshold] = 1
         signals[probas[:, 1] < (1 - self.threshold)] = -1
-        
         return signals
     
     def train(self, data: pd.DataFrame) -> None:
         X = self._prepare_features(data[:-self.lookback])  # Remove last lookback periods
         y = self._prepare_labels(data)
-        
+        if X.shape[0] == 0 or y.shape[0] == 0:
+            print("No data available for training. Skipping ML training.")
+            return
         self.model.fit(X, y)
     
     def optimize(self, data: pd.DataFrame, objective: str = 'sharpe_ratio') -> Dict[str, Any]:

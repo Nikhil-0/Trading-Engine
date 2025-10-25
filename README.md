@@ -212,12 +212,6 @@ print(f"Annual Return: {metrics['annual_return']:.2%}")
 - Custom exception hierarchy
 - Detailed error logging
 
-### CI/CD Pipeline
-- GitHub Actions workflow
-- Automated testing on multiple Python versions
-- Docker image building and pushing
-- Code coverage reporting
-
 ### Logging
 - Structured logging configuration
 - Log rotation

@@ -1,0 +1,34 @@
+# Exclude Python virtual environments
+venv/
+
+# Exclude logs and output files
+logs/
+*.log
+
+# Exclude Python cache and compiled files
+__pycache__/
+*.pyc
+
+# Exclude data files (add more extensions as needed)
+*.csv
+*.xlsx
+*.h5
+*.parquet
+
+# Exclude test files and folders
+tests/
+
+# Exclude Jupyter notebooks (if not needed)
+*.ipynb
+
+# Exclude environment files
+.env
+.env.*
+
+# Exclude Docker build artifacts
+*.tar
+*.gz
+
+# Exclude OS-specific files
+.DS_Store
+Thumbs.db

@@ -1,12 +1,25 @@
-FROM python:3.12-slim
+#Downgraded to 3.9 for compatibility
+FROM python:3.9
 
 # Set working directory
 WORKDIR /app
 
+# Install build tools and Python packaging tools
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        python3-dev \
+        python3-pip \
+        python3-setuptools && \
+    rm -rf /var/lib/apt/lists/*
+
+
+
 # Copy requirements first for caching
 COPY requirements.txt .
 
-# Install dependencies
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files

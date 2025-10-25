@@ -6,7 +6,6 @@ import ccxt
 import redis
 import pymongo
 from typing import Dict, Any, Optional, List
-import pandas_ta as ta
 from ..utils.logger import setup_logger
 from ..utils.config import Config
 
@@ -126,7 +125,6 @@ class DataManager:
             raise
 
     def validate_data(self, df: pd.DataFrame) -> pd.DataFrame:
-
         # Remove duplicates
         df = df[~df.index.duplicated(keep='first')]
         
@@ -134,7 +132,7 @@ class DataManager:
         df.sort_index(inplace=True)
         
         # Forward fill missing values
-        df.fillna(method='ffill', inplace=True)
+        df.ffill(inplace=True)
         
         # Remove rows with remaining NaN values
         df.dropna(inplace=True)
