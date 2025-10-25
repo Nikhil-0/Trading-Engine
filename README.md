@@ -1,3 +1,9 @@
+# Recent Improvements
+
+- Improved data validation and error handling for missing or invalid ticker data.
+- Fixed pandas fillna deprecation warning (now uses ffill for missing values).
+- Engine is robust against API/data failures and will not crash on empty or delisted tickers.
+
 # Advanced Trading Engine
 
 This is a sophisticated Python-based trading engine for quantitative finance, featuring machine learning strategies, advanced risk management, and comprehensive backtesting capabilities.
@@ -20,7 +26,8 @@ The trading engine consists of four main components working together to provide 
   - OBV (On Balance Volume)
 - **Data Validation and Preprocessing**
   - Automated data cleaning
-  - Missing value handling
+  - Robust missing value handling (uses ffill, avoids deprecated fillna)
+  - Graceful handling of empty or invalid data (no crashes on delisted or missing tickers)
   - Date alignment
 
 ### 2. Strategy Implementation (`src/strategies/`)
@@ -211,6 +218,7 @@ print(f"Annual Return: {metrics['annual_return']:.2%}")
 - Retry mechanism with exponential backoff
 - Custom exception hierarchy
 - Detailed error logging
+- Graceful skipping of tickers with missing or invalid data
 
 ### Logging
 - Structured logging configuration
